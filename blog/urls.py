@@ -6,4 +6,5 @@ urlpatterns = [
     url(r'^element/(?P<pk>[0-9]+)/$', views.element_detail),
     url(r'^element/new/$', views.element_new, name='element_new'),
     url(r'^element/(?P<pk>[0-9]+)/edit/$', views.element_edit, name='element_edit'),
+    url(r'^element/(?P<pk>\d+)/remove/$', views.element_remove, name='element_remove'),
 ]
