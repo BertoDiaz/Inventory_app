@@ -28,7 +28,7 @@ def element_new(request):
             element.author = request.user
             # element.published_date = timezone.now()
             element.save()
-            return redirect('element_detail', pk=element.pk)
+            return redirect('blog:element_detail', pk=element.pk)
     else:
         form = ElementForm()
     return render(request, 'blog/element_edit.html', {'form': form})
@@ -38,12 +38,12 @@ def element_new(request):
 def element_edit(request, pk):
     element = get_object_or_404(Element, pk=pk)
     if request.method == "POST":
-        form = ElementForm(request.POST, instance=element)
+        form = ElementForm(data=request.POST, instance=element)
         if form.is_valid():
             element = form.save(commit=False)
             element.author = request.user
             element.save()
-            return redirect('element_detail', pk=element.pk)
+            return redirect('blog:element_detail', pk=element.pk)
     else:
         form = ElementForm(instance=element)
     return render(request, 'blog/element_edit.html', {'form': form})
@@ -53,4 +53,4 @@ def element_edit(request, pk):
 def element_remove(request, pk):
     element = get_object_or_404(Element, pk=pk)
     element.delete()
-    return redirect('element_list')
+    return redirect('blog:element_list')

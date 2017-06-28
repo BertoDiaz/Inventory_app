@@ -3,8 +3,8 @@
 {% block content %}
     <div class="button">
         {% if user.is_authenticated %}
-            <a class="btn btn-default" href="{% url 'element_edit' pk=element.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="btn btn-default" href="{% url 'element_remove' pk=element.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            <a class="btn btn-default" href="{% url 'blog:element_edit' pk=element.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-default" href="{% url 'blog:element_remove' pk=element.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
     </div>
     <h1>{{ element.name }}</h1>
