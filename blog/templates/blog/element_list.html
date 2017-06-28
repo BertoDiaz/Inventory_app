@@ -6,7 +6,7 @@
             <div class="date">
                 {{ element.created_date }}
             </div>
-            <h1><a href="{% url 'blog.views.element_detail' pk=element.pk %}">{{ element.name }}</a></h1>
+            <h1><a href="{% url 'blog:element_detail' pk=element.pk %}">{{ element.name }}</a></h1>
             <p>{{ element.type_item|linebreaksbr }}</p>
         </div>
     {% endfor %}
