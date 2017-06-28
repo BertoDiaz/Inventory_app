@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for element in elements %}
+        <div class="element">
+            <div class="date">
+                {{ element.created_date }}
+            </div>
+            <h1><a href="{% url 'blog.views.element_detail' pk=element.pk %}">{{ element.name }}</a></h1>
+            <p>{{ element.type_item|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock content %}

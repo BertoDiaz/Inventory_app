@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="date">
+        {% if element.created_date %}
+            {{ element.created_date }}
+        {% endif %}
+        <a class="btn btn-default" href="{% url 'element_edit' pk=element.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+    <h1>{{ element.name }}</h1>
+    <p>{{ element.maker }}</p>
+    <p>{{ element.type_item|linebreaksbr }}</p>
+{% endblock %}
