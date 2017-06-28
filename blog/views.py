@@ -1,6 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Element
 from .forms import ElementForm
