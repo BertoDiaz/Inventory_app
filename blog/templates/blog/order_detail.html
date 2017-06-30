@@ -1,0 +1,21 @@
+{% extends 'blog/base_order.html' %}
+
+{% block content %}
+    <div class="button">
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" href="{% url 'blog:order_edit' pk=order.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-default" href="{% url 'blog:order_remove' pk=order.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        {% endif %}
+    </div>
+    <h1>{{ order.name }}</h1>
+    <p>{{ order.budget }}</p>
+    <p>{{ order.buy_type|linebreaksbr }}</p>
+    <p>{{ order.payment_requirements }}</p>
+    <p>{{ order.provider }}</p>
+    <p>{{ products }}</p>
+    <div class="dateDetail">
+        {% if order.created_date %}
+            {{ order.created_date }}
+        {% endif %}
+    </div>
+{% endblock %}
