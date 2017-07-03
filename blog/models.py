@@ -133,7 +133,7 @@ class Product(models.Model):
     description = models.CharField(max_length=300)
     quantity = models.CharField(max_length=20)
     unit_price = models.CharField(max_length=20)
-    order = models.ForeignKey('Order', null=True)
+    order = models.ForeignKey('Order', null=True, blank=True)
     created_date = models.DateTimeField(
             default=timezone.now)
 

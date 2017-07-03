@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 from django.utils import timezone
 from .models import Element, Order, Product
 from .forms import ElementForm, OrderForm, ProductForm
@@ -94,16 +95,26 @@ def order_new_next(request, pk):
     order = get_object_or_404(Order, pk=pk)
     ProductFormSet = formset_factory(ProductForm, extra=order.number_product)
     if request.method == "POST":
-        # form = ProductForm(request.POST)
-        form = ProductFormSet(request.POST, request.FILES)
-        print(form)
-        if form.is_valid():
-            product = form.save(commit=False)
-            order = get_object_or_404(Order, pk=pk)
-            order.product = product.pk
-            order.save()
-            product.save()
-            print(product)
+        product = ProductForm()
+        # print(product)
+        formset = ProductFormSet(request.POST)
+        # print(form)
+        if (formset.is_valid()):
+            for form in formset:
+                # print(form)
+                product = form.cleaned_data
+                product = form.save(commit=False)
+                # print(product)
+                # order = get_object_or_404(Order, pk=pk)
+                # product.order = pk
+                # order.save()
+                # product.save
+                # print(order)
+                # print(order.pk)
+                product.order = order
+                # print(product)
+                product.save()
+
             return redirect('blog:order_detail', pk=order.pk)
     else:
         # form = ProductForm()
@@ -115,16 +126,56 @@ def order_new_next(request, pk):
 @login_required
 def order_edit(request, pk):
     order = get_object_or_404(Order, pk=pk)
+    products = Product.objects.filter(order=order.pk).order_by('created_date')
+    ProductFormSet = formset_factory(ProductForm)
     if request.method == "POST":
-        form = OrderForm(data=request.POST, instance=order)
-        if form.is_valid():
-            order = form.save(commit=False)
+        order_form = OrderForm(data=request.POST, instance=order, prefix="orderForm")
+        # products = Product.objects.filter(order=order.pk).order_by('created_date')
+        # print(products[0])
+        formset = ProductFormSet(data=request.POST, prefix="productForm")
+        # products_form = ProductForm(data=request.POST, prefix="productForm")
+        # print(order_form)
+        # print(products_form)
+        print(len(products))
+        if order_form.is_valid() and formset.is_valid():
+            order = order_form.save(commit=False)
             order.author = request.user
             order.save()
+            # num = 0
+            # for form in formset:
+            for num in range(0, len(products)):
+                # print(form)
+                # products = form.cleaned_data
+                product = formset[num].save(commit=False)
+                product.order = order
+                if products[num].description != product.description:
+                    products[num].description = product.description
+
+                if products[num].quantity != product.quantity:
+                    products[num].quantity = product.quantity
+
+                if products[num].unit_price != product.unit_price:
+                    products[num].unit_price = product.unit_price
+
+                products[num].save()
+                # num = num + 1
+                # form.save()
             return redirect('blog:order_detail', pk=order.pk)
     else:
-        form = OrderForm(instance=order)
-    return render(request, 'blog/order_edit.html', {'form': form})
+        order_form = OrderForm(instance=order, prefix="orderForm")
+        products = Product.objects.filter(order=order.pk).order_by('created_date')
+        # print(products[0])
+        # num = 0
+        # products_form = [0, 0]
+        # for product in products:
+        #     products_form[num] = ProductForm(instance=product, prefix="productForm")
+        #     num = num + 1
+        products_formset = ProductFormSet(initial=[{'description': form.description,
+                                                    'quantity': form.quantity,
+                                                    'unit_price': form.unit_price}
+                                                   for form in products], prefix="productForm")
+    return render(request, 'blog/order_edit.html', {'order_form': order_form,
+                                                    'products_formset': products_formset})
 
 
 @login_required

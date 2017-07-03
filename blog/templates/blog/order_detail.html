@@ -8,11 +8,37 @@
         {% endif %}
     </div>
     <h1>{{ order.name }}</h1>
-    <p>{{ order.budget }}</p>
-    <p>{{ order.buy_type|linebreaksbr }}</p>
-    <p>{{ order.payment_requirements }}</p>
-    <p>{{ order.provider }}</p>
-    <p>{{ products }}</p>
+    <table>
+        <tr>
+            <th>BUDGET</th>
+            <th>{{ order.budget }}</th>
+        </tr>
+        <tr>
+            <th>BUY TYPE</th>
+            <th>{{ order.buy_type|linebreaksbr }}</th>
+        </tr>
+        <tr>
+            <th>PAYMENT REQUIREMENTS</th>
+            <th>{{ order.payment_requirements }}</th>
+        </tr>
+        <tr>
+            <th>PROVIDER</th>
+            <th>{{ order.provider }}</th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <th>ITEM</th>
+                <th>{{ product }}</th>
+            </tr>
+        {% endfor %}
+    </table>
+    <!-- <p>Budget: {{ order.budget }}</p>
+    <p>Buy Type: {{ order.buy_type|linebreaksbr }}</p>
+    <p>Payment requirements: {{ order.payment_requirements }}</p>
+    <p>Provider: {{ order.provider }}</p>
+    {% for product in products %}
+        <p>Item: {{ product }}</p>
+    {% endfor %} -->
     <div class="dateDetail">
         {% if order.created_date %}
             {{ order.created_date }}
