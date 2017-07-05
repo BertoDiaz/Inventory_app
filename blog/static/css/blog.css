@@ -1,5 +1,81 @@
 body {
-    padding-left: 15px;
+    /*padding-left: 15px;
+    padding-right: 15px;*/
+}
+
+/* navbar */
+.navbar {
+    background-color: #FF9400;
+}
+
+.navbar-light {
+    background-color: #FF9400;
+    border-color: #FF9400;
+    margin: 0px;
+}
+/* Title */
+.navbar-light .navbar-brand {
+    color: #777;
+}
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-brand:focus {
+    color: #5E5E5E;
+}
+/* Link */
+.navbar-light .navbar-nav > li > a {
+    color: #777;
+}
+.navbar-light .navbar-nav > li > a:hover,
+.navbar-light .navbar-nav > li > a:focus {
+    color: #333;
+}
+.navbar-light .navbar-nav > .active > a,
+.navbar-light .navbar-nav > .active > a:hover,
+.navbar-light .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #E7E7E7;
+}
+.navbar-light .navbar-nav > .open > a,
+.navbar-light .navbar-nav > .open > a:hover,
+.navbar-light .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #D5D5D5;
+}
+/* Caret */
+.navbar-light .navbar-nav > .dropdown > a .caret {
+    border-top-color: #777;
+    border-bottom-color: #777;
+}
+.navbar-light .navbar-nav > .dropdown > a:hover .caret,
+.navbar-light .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: #333;
+    border-bottom-color: #333;
+}
+.navbar-light .navbar-nav > .open > a .caret,
+.navbar-light .navbar-nav > .open > a:hover .caret,
+.navbar-light .navbar-nav > .open > a:focus .caret {
+    border-top-color: #555;
+    border-bottom-color: #555;
+}
+/* Mobile version */
+.navbar-light .navbar-toggle {
+    border-color: #DDD;
+}
+.navbar-light .navbar-toggle:hover,
+.navbar-light .navbar-toggle:focus {
+    background-color: #DDD;
+}
+.navbar-light .navbar-toggle .icon-bar {
+    background-color: #CCC;
+}
+@media (max-width: 767px) {
+    .navbar-light .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+    .navbar-light .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-light .navbar-nav .open .dropdown-menu > li > a:focus {
+          color: #333;
+    }
 }
 
 h1 a {
@@ -9,7 +85,7 @@ h1 a {
 
 .page-header {
     background-color: #ff9400;
-    margin-top: 0;
+    margin: 0px;
     padding: 20px 20px 20px 40px;
 }
 
@@ -52,7 +128,8 @@ h1, h2, h3, h4 {
 .top-menu, .top-menu:hover, .top-menu:visited {
     color: #ffffff;
     float: right;
-    font-size: 26pt;
+    font-size: 22pt;
+    margin-top: 20px;
     margin-right: 20px;
 }
 

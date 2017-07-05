@@ -49,7 +49,7 @@ class Order(models.Model):
 
     author = models.ForeignKey('auth.User')
     name = models.CharField(max_length=200)
-    research = models.CharField(max_length=200)
+    researcher = models.CharField(max_length=200)
     budget = models.ForeignKey('Budget')
     buy_type = models.ForeignKey('Buy_Type')
     payment_requirements = models.ForeignKey('Payment')

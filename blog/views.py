@@ -7,6 +7,11 @@ from .models import Element, Order, Product
 from .forms import ElementForm, OrderForm, ProductForm
 
 
+def init(request):
+
+    return render(request, 'blog/init.html')
+
+
 def element_list(request):
 
     elements = Element.objects.filter(created_date__lte=timezone.now()).order_by
