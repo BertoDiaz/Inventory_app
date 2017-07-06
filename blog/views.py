@@ -9,9 +9,9 @@ from .models import Element, Order, Product
 from .forms import ElementForm, OrderForm, ProductForm
 
 
-def init(request):
+def home(request):
 
-    return render(request, 'blog/init.html')
+    return render(request, 'blog/home.html')
 
 
 def element_list(request):
