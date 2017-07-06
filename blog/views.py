@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms.formsets import formset_factory
-from django.forms.models import modelformset_factory
 from django.utils import timezone
+import openpyxl
+from openpyxl.styles.borders import Border, Side
+from openpyxl.drawing.image import Image
 from .models import Element, Order, Product
 from .forms import ElementForm, OrderForm, ProductForm
 
@@ -93,6 +95,87 @@ def order_new(request):
     return render(request, 'blog/order_new.html', {'form': form})
 
 
+def setBordersCell(hoja):
+
+    border_TopBottomThin = Border(top=Side(style='thin'),
+                                  bottom=Side(style='thin'))
+
+    border_RightTopBottomThin = Border(right=Side(style='thin'),
+                                       top=Side(style='thin'),
+                                       bottom=Side(style='thin'))
+
+    border_TopThin = Border(top=Side(style='thin'))
+
+    border_BottomThin = Border(bottom=Side(style='thin'))
+
+    border_TopThinBottomDouble = Border(top=Side(style='thin'),
+                                        bottom=Side(style='double'))
+
+    border_RightTopBottomMedium = Border(right=Side(style='medium'),
+                                         top=Side(style='medium'),
+                                         bottom=Side(style='medium'))
+
+    hoja.cell('D6').border = border_TopBottomThin
+    hoja.cell('E6').border = border_RightTopBottomThin
+    hoja.cell('D7').border = border_TopBottomThin
+    hoja.cell('E7').border = border_RightTopBottomThin
+    hoja.cell('D8').border = border_TopBottomThin
+    hoja.cell('E8').border = border_RightTopBottomThin
+    hoja.cell('D9').border = border_TopBottomThin
+    hoja.cell('E9').border = border_RightTopBottomThin
+    hoja.cell('D10').border = border_TopBottomThin
+    hoja.cell('E10').border = border_RightTopBottomThin
+    hoja.cell('D11').border = border_TopBottomThin
+    hoja.cell('E11').border = border_RightTopBottomThin
+    hoja.cell('D12').border = border_TopBottomThin
+    hoja.cell('E12').border = border_RightTopBottomThin
+
+    hoja.cell('G12').border = border_RightTopBottomMedium
+
+    hoja.cell('D14').border = border_TopBottomThin
+    hoja.cell('E14').border = border_TopBottomThin
+    hoja.cell('F14').border = border_TopBottomThin
+    hoja.cell('G14').border = border_TopBottomThin
+
+    hoja.cell('D18').border = border_TopBottomThin
+    hoja.cell('E18').border = border_TopBottomThin
+    hoja.cell('F18').border = border_TopBottomThin
+    hoja.cell('G18').border = border_TopBottomThin
+    hoja.cell('H18').border = border_RightTopBottomThin
+
+    hoja.cell('G30').border = border_RightTopBottomThin
+
+    hoja.cell('B36').border = border_TopThin
+    hoja.cell('C36').border = border_TopThin
+    hoja.cell('D36').border = border_TopThin
+    hoja.cell('E36').border = border_TopThin
+
+    hoja.cell('B37').border = border_BottomThin
+    hoja.cell('C37').border = border_BottomThin
+    hoja.cell('D37').border = border_BottomThin
+    hoja.cell('E37').border = border_BottomThin
+    hoja.cell('F37').border = border_BottomThin
+    hoja.cell('G37').border = border_BottomThin
+
+    for num in range(38, 65):
+        numStr = str(num)
+        hoja.cell('B' + numStr).border = border_TopBottomThin
+        hoja.cell('C' + numStr).border = border_TopBottomThin
+        hoja.cell('D' + numStr).border = border_TopBottomThin
+        hoja.cell('E' + numStr).border = border_TopBottomThin
+        hoja.cell('F' + numStr).border = border_TopBottomThin
+        hoja.cell('G' + numStr).border = border_RightTopBottomThin
+
+    hoja.cell('I67').border = border_TopBottomThin
+    hoja.cell('I68').border = border_TopBottomThin
+    hoja.cell('I69').border = border_TopThinBottomDouble
+
+    img = Image('blog/static/images/icn2.png')
+    # img.anchor(hoja.cell('H2'))
+    hoja.add_image(img, 'H2')
+    return hoja
+
+
 @login_required
 def order_new_next(request, pk):
     order = get_object_or_404(Order, pk=pk)
@@ -100,12 +183,32 @@ def order_new_next(request, pk):
     if request.method == "POST":
         product = ProductForm()
         formset = ProductFormSet(request.POST)
+        # doc = openpyxl.load_workbook('blog/formulariosPedidos/Formulario_Pedido_v2.xlsx',
+        #                              formatting_info=True)
+        doc = openpyxl.load_workbook('blog/formulariosPedidos/Formulario_Pedido_v2.xlsx')
+        doc.get_sheet_names()
+        hoja = doc.get_sheet_by_name('Order Form')
+        hoja['C6'] = order.researcher
+        hoja['C7'] = order.budget.name
+        hoja['C10'] = order.buy_type.name
+        hoja['C12'] = order.payment_requirements.name
+        hoja['C18'] = order.provider.name
+        num = 38
+        nameFile = "FP_" + order.name
         if (formset.is_valid()):
             for form in formset:
                 product = form.cleaned_data
                 product = form.save(commit=False)
+                numString = str(num)
+                hoja['A' + numString] = product.description
+                hoja['H' + numString] = product.quantity
+                hoja['I' + numString] = product.unit_price
+                num = num + 1
                 product.order = order
                 product.save()
+
+            hoja = setBordersCell(hoja)
+            doc.save('blog/formulariosPedidos/' + nameFile + '.xlsx')
 
             return redirect('blog:order_detail', pk=order.pk)
     else:
