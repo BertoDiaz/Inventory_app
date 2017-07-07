@@ -7,7 +7,7 @@
                 {{ order.created_date }}
             </div>
             <h1><a href="{% url 'blog:order_detail' pk=order.pk %}">{{ order.name }}</a></h1>
-            <p>{{ order.type_item|linebreaksbr }}</p>
+            <!-- <p>{{ order.type_item|linebreaksbr }}</p> -->
         </div>
     {% endfor %}
 {% endblock content %}

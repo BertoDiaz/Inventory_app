@@ -49,11 +49,11 @@ class Order(models.Model):
 
     author = models.ForeignKey('auth.User')
     name = models.CharField(max_length=200)
-    researcher = models.CharField(max_length=200)
+    applicant = models.CharField(max_length=200)
     budget = models.ForeignKey('Budget')
-    buy_type = models.ForeignKey('Buy_Type')
-    payment_requirements = models.ForeignKey('Payment')
-    provider = models.ForeignKey('Provider')
+    type_of_purchase = models.ForeignKey('Type_of_purchase')
+    payment_conditions = models.ForeignKey('Payment')
+    supplier = models.ForeignKey('Supplier')
     # product = models.ForeignKey('Product', null=True)
     number_product = models.IntegerField(default=1)
     created_date = models.DateTimeField(
@@ -82,8 +82,8 @@ class Budget(models.Model):
         return self.name
 
 
-class Buy_Type(models.Model):
-    """docstring for Buy_Type."""
+class Type_of_purchase(models.Model):
+    """docstring for Type_of_purchase."""
 
     name = models.CharField(max_length=200)
     created_date = models.DateTimeField(
@@ -112,8 +112,8 @@ class Payment(models.Model):
         return self.name
 
 
-class Provider(models.Model):
-    """docstring for Provider."""
+class Supplier(models.Model):
+    """docstring for Supplier."""
 
     name = models.CharField(max_length=200)
     created_date = models.DateTimeField(

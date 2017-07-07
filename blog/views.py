@@ -75,10 +75,14 @@ def order_list(request):
 
 def order_detail(request, pk):
     order = get_object_or_404(Order, pk=pk)
-    products = Product.objects.filter(order=order.pk).order_by
-    ('created_date')
+    products = Product.objects.filter(order=order.pk).order_by('created_date')
 
-    return render(request, 'blog/order_detail.html', {'order': order, 'products': products})
+    noItem = False
+    if not products.exists():
+        noItem = True
+
+    return render(request, 'blog/order_detail.html', {'order': order, 'products': products,
+                                                      'noItem': noItem})
 
 
 @login_required
@@ -188,11 +192,11 @@ def order_new_next(request, pk):
         doc = openpyxl.load_workbook('blog/formulariosPedidos/Formulario_Pedido_v2.xlsx')
         doc.get_sheet_names()
         hoja = doc.get_sheet_by_name('Order Form')
-        hoja['C6'] = order.researcher
+        hoja['C6'] = order.applicant
         hoja['C7'] = order.budget.name
-        hoja['C10'] = order.buy_type.name
-        hoja['C12'] = order.payment_requirements.name
-        hoja['C18'] = order.provider.name
+        hoja['C10'] = order.type_of_purchase.name
+        hoja['C12'] = order.payment_conditions.name
+        hoja['C18'] = order.supplier.name
         num = 38
         nameFile = "FP_" + order.name
         if (formset.is_valid()):
