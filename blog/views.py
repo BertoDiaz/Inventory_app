@@ -228,7 +228,6 @@ def order_edit(request, pk):
     if request.method == "POST":
         order_form = OrderForm(data=request.POST, instance=order, prefix="orderForm")
         formset = ProductFormSet(data=request.POST, prefix="productForm")
-        print(len(products))
         if order_form.is_valid() and formset.is_valid():
             order = order_form.save(commit=False)
             order.author = request.user
@@ -250,12 +249,18 @@ def order_edit(request, pk):
     else:
         order_form = OrderForm(instance=order, prefix="orderForm")
         products = Product.objects.filter(order=order.pk).order_by('created_date')
+        noItem = False
+        if not products.exists():
+            noItem = True
         products_formset = ProductFormSet(initial=[{'description': form.description,
                                                     'quantity': form.quantity,
                                                     'unit_price': form.unit_price}
                                                    for form in products], prefix="productForm")
+        count = products.count
     return render(request, 'blog/order_edit.html', {'order_form': order_form,
-                                                    'products_formset': products_formset})
+                                                    'products_formset': products_formset,
+                                                    'noItem': noItem,
+                                                    'count': count})
 
 
 @login_required
